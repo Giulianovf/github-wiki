@@ -12,6 +12,11 @@ function App() {
   const [repos, setRepos] = useState([]);
 
   const handleSearchRepo = async () => {
+    if (!currentRepo.includes('/')) {
+      alert('Por favor, insira o repositório no formato "owner/repo".');
+      return;
+    }
+
     try {
       const { data } = await api.get(`repos/${currentRepo}`);
 
@@ -28,7 +33,7 @@ function App() {
         alert('Repositório não encontrado');
       }
     } catch (error) {
-      alert('Erro ao buscar repositório');
+      alert('Erro ao buscar repositório: ' + (error.response?.status === 404 ? 'Repositório não encontrado' : 'Erro desconhecido'));
     }
   };
 
